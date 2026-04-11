@@ -823,7 +823,7 @@
             }
             .form-inner { gap: 24px; }
 
-            .q-header { font-size: 1.74rem; }
+            .q-header { font-size: 1.74rem; hyphens: auto; overflow-wrap: break-word; }
             .q-subline { font-size: 0.93rem; margin-top: -14px; }
 
             /* Choice options */
@@ -1164,6 +1164,7 @@ function next() {
 function render() {
     const s = STEPS[step];
     const pct = ((step + 1) / TOTAL) * 100;
+    window.scrollTo({ top: 0, behavior: 'instant' });
     setTimeout(updateCookieBtnPos, 0);
 
     const inner = document.getElementById('form-inner');
