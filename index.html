@@ -1,0 +1,1668 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beratung bei Stark Finanz</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #fff;
+            min-height: calc(100vh / 0.9);
+            color: #0f1e42;
+            zoom: 0.9;
+        }
+
+        /* ── COOKIE BANNER ── */
+        .cookie-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.45);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+        .cookie-overlay.active { display: flex; }
+
+        /* ── Simple view ── */
+        .cookie-modal {
+            background: #fff;
+            border-radius: 10px;
+            padding: 28px 28px 22px;
+            width: 100%;
+            max-width: 440px;
+            margin: 20px;
+            box-shadow: 0 6px 28px rgba(0,0,0,0.16);
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+        }
+
+        .cookie-modal-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 14px;
+        }
+
+        .cookie-modal-title {
+            font-size: 0.97rem;
+            font-weight: 700;
+            color: #0f1e42;
+        }
+
+        .cookie-modal-text {
+            font-size: 0.83rem;
+            color: #0f1e42;
+            line-height: 1.65;
+            margin-bottom: 20px;
+        }
+
+        .cookie-modal-text a {
+            color: #0e8fb5;
+            text-decoration: underline;
+        }
+        .cookie-modal-text a:hover { opacity: 0.8; }
+
+        .cookie-modal-btns {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 14px;
+        }
+
+        .cookie-accept, .cookie-necessary {
+            flex: 1;
+            padding: 11px 10px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .cookie-accept {
+            background: #fff;
+            border: 1.5px solid #0f1e42;
+            color: #0f1e42;
+        }
+        .cookie-accept:hover { background: #f8faff; }
+
+        .cookie-necessary {
+            background: #fff;
+            border: 1.5px solid #0f1e42;
+            color: #0f1e42;
+        }
+        .cookie-necessary:hover { background: #f8faff; }
+
+        .cookie-settings-row {
+            text-align: center;
+            margin-bottom: 18px;
+        }
+
+        .cookie-settings-link {
+            font-size: 0.83rem;
+            color: #0f1e42;
+            text-decoration: none;
+            font-weight: 500;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+        }
+        .cookie-settings-link:hover { text-decoration: underline; }
+
+        .cookie-modal-footer {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            padding-top: 14px;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .cookie-modal-footer a {
+            font-size: 0.78rem;
+            color: #0e8fb5;
+            text-decoration: underline;
+        }
+        .cookie-modal-footer a:hover { opacity: 0.8; }
+
+        /* ── Settings view ── */
+        #cookie-view-settings {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+            min-height: 0;
+            flex: 1;
+        }
+
+        .cookie-modal.settings-open {
+            padding: 0;
+            overflow: hidden;
+            max-height: var(--cookie-max-height, 80vh);
+        }
+
+        .cookie-scroll-area {
+            overflow-y: auto;
+            padding: 28px 28px 16px;
+            flex: 1;
+            min-height: 0;
+        }
+
+        .cookie-sticky-footer {
+            padding: 16px 28px 22px;
+            background: #fff;
+            flex-shrink: 0;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .cookie-categories {
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 18px;
+        }
+
+        .cookie-category {
+            padding: 13px 16px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .cookie-category:last-child { border-bottom: none; }
+
+        .cookie-cat-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .cookie-cat-name {
+            font-size: 0.83rem;
+            font-weight: 600;
+            color: #0f1e42;
+            line-height: 1.3;
+        }
+
+        .cookie-cat-sub {
+            font-size: 0.72rem;
+            color: #0e8fb5;
+            font-weight: 500;
+            margin-top: 2px;
+        }
+
+        .cookie-cat-desc {
+            font-size: 0.78rem;
+            color: #64748b;
+            line-height: 1.55;
+            margin-top: 7px;
+        }
+
+        .cookie-cat-details {
+            background: none;
+            border: none;
+            color: #0e8fb5;
+            font-size: 0.75rem;
+            cursor: pointer;
+            padding: 5px 0 0;
+            font-weight: 500;
+            display: block;
+        }
+        .cookie-cat-details:hover { text-decoration: underline; }
+
+        /* Toggle switch */
+        .cookie-toggle {
+            position: relative;
+            flex-shrink: 0;
+            cursor: pointer;
+        }
+        .cookie-toggle input { display: none; }
+        .cookie-toggle-track {
+            display: block;
+            width: 38px;
+            height: 20px;
+            background: #e2e8f0;
+            border-radius: 100px;
+            position: relative;
+            transition: background 0.2s;
+        }
+        .cookie-toggle-track::after {
+            content: '';
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            width: 14px;
+            height: 14px;
+            background: #fff;
+            border-radius: 50%;
+            transition: transform 0.2s;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+        }
+        .cookie-toggle input:checked + .cookie-toggle-track { background: #0e8fb5; }
+        .cookie-toggle input:checked + .cookie-toggle-track::after { transform: translateX(18px); }
+        .cookie-toggle--disabled { cursor: not-allowed; opacity: 0.6; }
+
+        /* ── COOKIE BUTTON ── */
+        .cookie-btn {
+            position: fixed;
+            bottom: 76px;
+            left: 20px;
+            width: 36px;
+            height: 36px;
+            background: #fff;
+            border: none;
+            border-radius: 50%;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #94a3b8;
+            cursor: pointer;
+            z-index: 1000;
+            transition: color 0.15s, box-shadow 0.15s;
+        }
+        .cookie-btn:hover {
+            color: #0e8fb5;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.18);
+        }
+
+        /* ── FOOTER ── */
+        .site-footer {
+            background: #0f1e42;
+            padding: 18px 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            flex-wrap: wrap;
+            flex-shrink: 0;
+        }
+
+        .site-footer .copy {
+            color: rgba(255,255,255,0.55);
+            font-size: 0.65rem;
+            white-space: nowrap;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 22px;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: rgba(255,255,255,0.7);
+            font-size: 0.65rem;
+            text-decoration: none;
+            white-space: nowrap;
+            transition: color 0.15s;
+        }
+
+        .footer-links a:hover { color: #fff; }
+
+        @media (max-width: 600px) {
+            .site-footer { flex-direction: column; align-items: flex-start; padding: 18px 20px; gap: 12px; }
+        }
+
+        /* ── LANDING ── */
+        #landing {
+            flex: 1;
+            background: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 62px 26px;
+        }
+
+        #landing-page {
+            min-height: calc(100vh / 0.9);
+            display: flex;
+            flex-direction: column;
+        }
+
+        #landing h1 {
+            color: #0e8fb5;
+            font-size: clamp(2.275rem, 5.2vw, 3.38rem);
+            font-weight: 800;
+            text-align: center;
+            margin-bottom: 13px;
+            line-height: 1.25;
+        }
+
+        #landing .subline {
+            color: #64748b;
+            font-size: 1.3rem;
+            text-align: center;
+            margin-bottom: 57px;
+        }
+
+        .category-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            width: 100%;
+            max-width: 624px;
+        }
+
+        .category-btn {
+            background: #fff;
+            color: #0f1e42;
+            border: 1.5px solid #cbd5e1;
+            padding: 23px 29px;
+            border-radius: 13px;
+            font-size: 1.26rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.15s ease;
+            text-align: left;
+        }
+
+        .category-btn:hover:not(:disabled) {
+            border-color: #0f1e42;
+            background: #f8faff;
+        }
+
+        .category-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        .category-btn--muted,
+        .category-btn--muted .arrow { color: #94a3b8 !important; }
+        .category-btn--muted:hover,
+        .category-btn--muted:hover .arrow { color: #0f1e42 !important; }
+
+        .category-btn--featured {
+            background: #0e8fb5;
+            color: #fff;
+            border-color: #0e8fb5;
+        }
+        .category-btn--featured .arrow { color: #fff; }
+        .category-btn--featured:hover:not(:disabled) {
+            background: #0b7a9c;
+            border-color: #0b7a9c;
+        }
+
+        .category-btn .arrow {
+            color: #0f1e42;
+            font-size: 1.43rem;
+            flex-shrink: 0;
+        }
+
+        /* ── FORM PAGE ── */
+        #form-page {
+            display: none;
+            min-height: calc(100vh / 0.9);
+            background: #fff;
+            flex-direction: column;
+        }
+        #form-page.active { display: flex; }
+        #form-page .form-body { flex: 1; }
+
+
+        /* Form body */
+        .form-body {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 42px 26px 62px;
+            width: 100%;
+        }
+
+        .form-inner {
+            width: 100%;
+            max-width: 728px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 36px;
+        }
+
+        /* Question header */
+        .q-header {
+            font-size: clamp(1.625rem, 4.55vw, 2.21rem);
+            font-weight: 700;
+            color: #0e8fb5;
+            text-align: center;
+            line-height: 1.35;
+        }
+
+        .q-subline {
+            font-size: 1.17rem;
+            color: #64748b;
+            text-align: center;
+            margin-top: -21px;
+        }
+
+        /* ── CHOICE OPTIONS ── */
+        .options-list {
+            display: flex;
+            flex-direction: column;
+            gap: 13px;
+            width: 100%;
+        }
+
+        .opt-btn {
+            background: #fff;
+            border: 1.5px solid #e2e8f0;
+            color: #0f1e42;
+            padding: 21px 26px;
+            border-radius: 10px;
+            font-size: 1.235rem;
+            font-weight: 400;
+            cursor: pointer;
+            text-align: left;
+            transition: all 0.15s ease;
+            width: 100%;
+        }
+
+        .opt-btn:hover {
+            border-color: #0f1e42;
+            background: #f8faff;
+        }
+
+        .opt-btn.selected {
+            border-color: #0e8fb5;
+            background: #f0fafd;
+            color: #0e8fb5;
+            font-weight: 600;
+        }
+
+        /* ── UPLOAD ── */
+        .upload-dropzone {
+            width: 100%;
+            border: 2px dashed #e2e8f0;
+            border-radius: 12px;
+            padding: 40px 24px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            transition: border-color 0.15s, background 0.15s;
+            background: #fff;
+        }
+        .upload-dropzone:hover, .upload-dropzone.dragover {
+            border-color: #0e8fb5;
+            background: #f0fafd;
+        }
+        .upload-icon { margin-bottom: 4px; }
+        .upload-text {
+            font-size: 1rem;
+            color: #0f1e42;
+            text-align: center;
+        }
+        .upload-link {
+            color: #0e8fb5;
+            font-weight: 600;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+        .upload-hint {
+            font-size: 0.85rem;
+            color: #94a3b8;
+            text-align: center;
+        }
+        .upload-filelist {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            width: 100%;
+        }
+        .upload-file-item {
+            font-size: 0.9rem;
+            color: #0f1e42;
+            background: #f0fafd;
+            border: 1px solid #0e8fb5;
+            border-radius: 6px;
+            padding: 8px 14px;
+        }
+
+        /* ── YES/NO with checkmark ── */
+        .opt-btn-check {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .opt-check {
+            color: transparent;
+            font-size: 1.3rem;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .opt-btn-check.selected .opt-check {
+            color: #0e8fb5;
+        }
+
+        /* ── TEXTAREA ── */
+        .field-textarea {
+            resize: vertical;
+            min-height: 140px;
+            padding-top: 18px;
+            font-family: inherit;
+            line-height: 1.6;
+        }
+
+        /* ── STEPPER ── */
+        .stepper-wrap {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 13px;
+            width: 100%;
+        }
+
+        .stepper-row {
+            display: flex;
+            align-items: center;
+            gap: 0;
+            width: 100%;
+            max-width: 546px;
+        }
+
+        .step-btn {
+            background: #fff;
+            color: #0f1e42;
+            border: 1.5px solid #e2e8f0;
+            width: 73px;
+            height: 73px;
+            font-size: 1.82rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            transition: background 0.12s, border-color 0.12s;
+            user-select: none;
+            line-height: 1;
+        }
+
+        .step-btn:first-child { border-radius: 10px 0 0 10px; border-right: none; }
+        .step-btn:last-child  { border-radius: 0 10px 10px 0; border-left: none; }
+        .step-btn:hover { background: #f1f5f9; border-color: #cbd5e1; }
+
+        .step-input {
+            flex: 1;
+            border: 1.5px solid #e2e8f0;
+            border-left: none;
+            border-right: none;
+            background: #fff;
+            text-align: center;
+            font-size: 1.95rem;
+            font-weight: 600;
+            color: #0f1e42;
+            height: 73px;
+            width: 0;
+            min-width: 0;
+            padding: 0 10px;
+        }
+        .step-input:focus { outline: none; }
+        .step-input::-webkit-outer-spin-button,
+        .step-input::-webkit-inner-spin-button { -webkit-appearance: none; }
+
+        /* ── TEXT / NAME / CONTACT INPUTS ── */
+        .field {
+            width: 100%;
+            padding: 20px 23px;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 1.26rem;
+            color: #0f1e42;
+            outline: none;
+            transition: border-color 0.15s;
+            background: #fff;
+        }
+        .field:focus { border-color: #2563eb; }
+        .field::placeholder { color: #64748b; }
+
+        .field-group {
+            display: flex;
+            flex-direction: column;
+            gap: 13px;
+            width: 100%;
+        }
+
+        /* ── NAVIGATION BUTTONS ── */
+        .btn-center {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+        }
+
+        .btn-weiter-solo {
+            background: #f1f5f9;
+            color: #0f1e42;
+            border: none;
+            padding: 20px 83px;
+            border-radius: 10px;
+            font-size: 1.26rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.15s;
+        }
+        .btn-weiter-solo:hover { background: #e2e8f0; }
+
+        .btn-row {
+            display: flex;
+            gap: 13px;
+            width: 100%;
+            max-width: 546px;
+        }
+
+        .btn-zurueck {
+            background: #f1f5f9;
+            color: #0f1e42;
+            border: none;
+            padding: 20px 29px;
+            border-radius: 10px;
+            font-size: 1.235rem;
+            font-weight: 500;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: background 0.15s;
+            flex-shrink: 0;
+        }
+        .btn-zurueck:hover { background: #e2e8f0; }
+
+        .btn-weiter {
+            flex: 1;
+            background: #0e8fb5;
+            color: #fff;
+            border: none;
+            padding: 20px 26px;
+            border-radius: 10px;
+            font-size: 1.26rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.15s;
+        }
+        .btn-weiter:hover { background: #0b7a9c; }
+
+        /* ── CHECKBOXES ── */
+        .cb-group {
+            display: flex;
+            flex-direction: column;
+            gap: 21px;
+            width: 100%;
+        }
+
+        .cb-label {
+            display: flex;
+            gap: 16px;
+            align-items: flex-start;
+            cursor: pointer;
+        }
+
+        .cb-label input[type="checkbox"] {
+            width: 23px;
+            height: 23px;
+            flex-shrink: 0;
+            margin-top: 2px;
+            accent-color: #2563eb;
+            cursor: pointer;
+        }
+
+        .cb-label span {
+            font-size: 1.08rem;
+            color: #0f1e42;
+            line-height: 1.6;
+        }
+
+        .cb-label span a {
+            color: #0e8fb5;
+            text-decoration: none;
+        }
+        .cb-label span a:hover { text-decoration: underline; }
+
+        /* Submit / Beratung anfragen */
+        .btn-row-end {
+            display: flex;
+            gap: 13px;
+            width: 100%;
+        }
+
+        .btn-anfragen {
+            flex: 1;
+            background: #f1f5f9;
+            color: #0f1e42;
+            border: none;
+            padding: 20px 26px;
+            border-radius: 10px;
+            font-size: 1.26rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+        .btn-anfragen.ready {
+            background: #0e8fb5;
+            color: #fff;
+        }
+        .btn-anfragen.ready:hover { background: #0b7a9c; }
+
+        /* ── QUICK CHIPS ── */
+        .quick-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            width: 100%;
+            justify-content: center;
+            margin-top: calc(-36px + 10px); /* reduce gap from input: only 10px */
+            margin-bottom: calc(-36px + 28px); /* increase gap to btn-row: 28px */
+        }
+
+        .quick-chip {
+            background: #fff;
+            border: 1.5px solid #e2e8f0;
+            color: #94a3b8;
+            padding: 7px 14px;
+            border-radius: 100px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+        .quick-chip:hover {
+            border-color: #0e8fb5;
+            color: #0e8fb5;
+            background: #f0fafd;
+        }
+
+        /* ── SUCCESS ── */
+        .success-wrap {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 23px;
+            text-align: center;
+        }
+        .success-icon { font-size: 4.55rem; }
+        .success-sub { color: #0f1e42; font-size: 1.26rem; line-height: 1.75; }
+
+        /* ── SLIDE ANIMATION ── */
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(28px); }
+            to   { opacity: 1; transform: translateX(0); }
+        }
+        .slide { animation: slideIn 0.25s ease forwards; }
+
+        @media (max-width: 480px) {
+            .form-body { padding: 31px 21px 52px; justify-content: flex-start; padding-top: 31px; }
+            .step-btn { width: 62px; height: 62px; }
+            .step-input { height: 62px; font-size: 1.69rem; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ── LANDING PAGE ── -->
+<div id="landing-page">
+    <div id="landing">
+        <h1>Visite. Auch mit deinen Finanzen.</h1>
+        <p class="subline">Wobei brauchst du Unterstützung?</p>
+        <div class="category-buttons">
+            <button class="category-btn category-btn--featured" onclick="startForm('finanzplanung')">
+                <span>Finanzanalyse / Finanzplanung 360°</span>
+                <span class="arrow" style="color:#fff;">›</span>
+            </button>
+            <button class="category-btn" onclick="startForm('altersvorsorge')">
+                <span>Altersvorsorge planen / prüfen</span>
+                <span class="arrow">›</span>
+            </button>
+            <button class="category-btn" onclick="startForm('immobilien')">
+                <span>Immobilien als Kapitalanlage</span>
+                <span class="arrow">›</span>
+            </button>
+            <button class="category-btn" onclick="startForm('bu')">
+                <span>Arbeitskraftabsicherung prüfen / abschließen</span>
+                <span class="arrow">›</span>
+            </button>
+            <button class="category-btn category-btn--muted" onclick="startForm('andere')">
+                <span>Etwas anderes</span>
+                <span class="arrow">›</span>
+            </button>
+        </div>
+    </div>
+    <footer class="site-footer">
+        <span class="copy">© 2026 Philipp Stark. Alle Rechte vorbehalten.</span>
+        <nav class="footer-links">
+            <a href="https://www.starkfinanz.de/impressum" target="_blank" rel="noopener">Impressum</a>
+            <a href="https://www.starkfinanz.de/datenschutz" target="_blank" rel="noopener">Datenschutz</a>
+            <a href="https://www.starkfinanz.de/cookies" target="_blank" rel="noopener">Cookies</a>
+            <a href="https://www.starkfinanz.de/erstinformation" target="_blank" rel="noopener">Erstinformation</a>
+            <a href="https://www.starkfinanz.de/transparenzverordnung" target="_blank" rel="noopener">Transparenzverordnung</a>
+        </nav>
+    </footer>
+</div>
+
+<!-- ── MULTI-STEP FORM ── -->
+<div id="form-page">
+    <div class="form-body">
+        <div class="form-inner slide" id="form-inner"></div>
+    </div>
+    <footer class="site-footer">
+        <span class="copy">© 2026 Philipp Stark. Alle Rechte vorbehalten.</span>
+        <nav class="footer-links">
+            <a href="https://www.starkfinanz.de/impressum" target="_blank" rel="noopener">Impressum</a>
+            <a href="https://www.starkfinanz.de/datenschutz" target="_blank" rel="noopener">Datenschutz</a>
+            <a href="https://www.starkfinanz.de/cookies" target="_blank" rel="noopener">Cookies</a>
+            <a href="https://www.starkfinanz.de/erstinformation" target="_blank" rel="noopener">Erstinformation</a>
+            <a href="https://www.starkfinanz.de/transparenzverordnung" target="_blank" rel="noopener">Transparenzverordnung</a>
+        </nav>
+    </footer>
+</div>
+
+<script>
+const SHARED_STEPS = [
+    {
+        id: 'employment',
+        type: 'choice',
+        header: 'Was ist deine derzeitige\nberufliche Situation?',
+        options: ['Angestellt', 'Selbständig', 'Azubi', 'Student', 'Elternzeit', 'Andere']
+    },
+    {
+        id: 'job_title',
+        type: 'text',
+        header: 'Was ist deine aktuelle\nBerufsbezeichnung?',
+        placeholder: 'z. B. Pflegefachkraft'
+    },
+    {
+        id: 'net_income',
+        type: 'stepper',
+        header: 'Wie viel verdienst du aktuell\nnetto pro Monat?',
+        default: 2500, step: 100, min: 0
+    },
+    {
+        id: 'birth_year',
+        type: 'stepper',
+        header: 'In welchem Jahr\nbist du geboren?',
+        default: 1990, step: 1, min: 1940, max: 2010
+    },
+    {
+        id: 'name',
+        type: 'name',
+        header: 'Wie heißt du?'
+    },
+    {
+        id: 'weitere_themen',
+        type: 'yesno',
+        header: 'Gibt es weitere Themen bei\ndenen wir dir helfen können?'
+    },
+    {
+        id: 'weitere_themen_inhalt',
+        type: 'textarea',
+        header: 'Gibt es weitere Themen bei\ndenen wir dir helfen können?',
+        subline: 'Bitte sei so genau wie möglich:',
+        placeholder: 'Beispiel: Verträge zur BU prüfen, Kinder Vorsorge etc.'
+    },
+    {
+        id: 'contact',
+        type: 'contact',
+        header: 'Wie können wir Kontakt\nzu dir aufnehmen?'
+    }
+];
+
+const STEPS_BY_CATEGORY = {
+    altersvorsorge: [
+        {
+            id: 'situation',
+            type: 'choice',
+            header: 'Was beschreibt deine aktuelle\nSituation am Besten?',
+            subline: 'Was beschreibt deine aktuelle Situation am besten?',
+            options: [
+                'Ich habe noch gar nichts für die Rente',
+                'Ich habe schon etwas, bin aber unsicher ob\'s reicht',
+                'Ich möchte meine bestehende Vorsorge optimieren'
+            ]
+        },
+        {
+            id: 'monthly',
+            type: 'stepper',
+            header: 'Wie viel kannst du monatlich für\ndeine Altersvorsorge investieren?',
+            default: 250, step: 10, min: 0
+        },
+        {
+            id: 'onetime',
+            type: 'choice',
+            header: 'Wie viel kannst du einmalig in\ndeine Altersvorsorge investieren?',
+            options: ['< 2.000 €', '2.000 – 3.500 €', '3.500 – 5.000 €', '> 5.000 €']
+        },
+        ...SHARED_STEPS
+    ],
+    immobilien: [
+        {
+            id: 'monthly',
+            type: 'stepper',
+            header: 'Wie viel kannst du monatlich für\ndeine Kapitalanlage investieren?',
+            default: 250, step: 10, min: 0
+        },
+        {
+            id: 'onetime',
+            type: 'stepper',
+            header: 'Wie viel kannst du einmalig in\ndeine Kapitalanlage investieren?',
+            default: 5000, step: 10, min: 0
+        },
+        ...SHARED_STEPS
+    ],
+    finanzplanung: [
+        {
+            id: 'situation',
+            type: 'choice',
+            header: 'Was beschreibt deine aktuelle\nSituation am Besten?',
+            options: [
+                'Ich habe noch gar nichts',
+                'Ich möchte meinen bestehenden Plan überprüfen lassen'
+            ]
+        },
+        {
+            id: 'monthly',
+            type: 'stepper',
+            header: 'Wie viel kannst du monatlich\nfür deinen Plan investieren?',
+            default: 250, step: 10, min: 0
+        },
+        {
+            id: 'onetime',
+            type: 'choice',
+            header: 'Wie viel kannst du einmalig\nin deinen Plan investieren?',
+            options: ['< 2.000 €', '2.000 – 3.500 €', '3.500 – 5.000 €', '> 5.000 €']
+        },
+        ...SHARED_STEPS
+    ],
+    andere: [
+        {
+            id: 'thema',
+            type: 'textarea',
+            header: 'Bei welchem Thema können\nwir dir weiterhelfen?',
+            subline: 'Bitte sei so genau wie möglich:',
+            placeholder: 'Beispiel: Verträge zur BU prüfen, Kinder Vorsorge etc.'
+        },
+        {
+            id: 'monthly',
+            type: 'stepper',
+            header: 'Wie viel kannst du monatlich\nfür dein Anliegen investieren?',
+            default: 250, step: 10, min: 0
+        },
+        ...SHARED_STEPS
+    ],
+    bu: [
+        {
+            id: 'bu_exists',
+            type: 'yesno',
+            header: 'Hast du bereits eine\nBerufsunfähigkeitsversicherung?'
+        },
+        {
+            id: 'bu_upload',
+            type: 'upload',
+            header: 'Bitte lade deine aktuelle\nBerufsunfähigkeitsversicherung\nhier hoch (optional)',
+            subline: 'Bitte lade hier deine aktuelle BU hoch'
+        },
+        ...SHARED_STEPS
+    ]
+};
+
+let STEPS = [];
+let TOTAL = 0;
+let step = 0;
+const answers = {};
+let selectedChoice = null;
+
+function startForm(category) {
+    STEPS = STEPS_BY_CATEGORY[category];
+    TOTAL = STEPS.length;
+    step = 0;
+    selectedChoice = null;
+    Object.keys(answers).forEach(k => delete answers[k]);
+    document.getElementById('landing-page').style.display = 'none';
+    document.getElementById('form-page').classList.add('active');
+    render();
+    updateCookieBtnPos();
+}
+
+function goBack() {
+    if (step === 0) {
+        document.getElementById('form-page').classList.remove('active');
+        document.getElementById('landing-page').style.display = 'flex';
+        updateCookieBtnPos();
+    } else {
+        let prev = step - 1;
+        // Skip textarea step when going back if "Nein" was chosen
+        if (STEPS[prev] && STEPS[prev].id === 'weitere_themen_inhalt' && answers['weitere_themen'] === 'Nein') {
+            prev--;
+        }
+        // Skip upload step when going back if "Nein" was chosen for bu_exists
+        if (STEPS[prev] && STEPS[prev].id === 'bu_upload' && answers['bu_exists'] === 'Nein') {
+            prev--;
+        }
+        step = prev;
+        selectedChoice = answers[STEPS[step].id] || null;
+        render();
+    }
+}
+
+function next() {
+    let nextStep = step + 1;
+    // Skip textarea step if "Nein" was chosen
+    if (STEPS[step].id === 'weitere_themen' && answers['weitere_themen'] === 'Nein') {
+        nextStep = step + 2;
+    }
+    // Skip upload step if "Nein" was chosen for bu_exists
+    if (STEPS[step].id === 'bu_exists' && answers['bu_exists'] === 'Nein') {
+        nextStep = step + 2;
+    }
+    if (nextStep < TOTAL) { step = nextStep; selectedChoice = null; render(); }
+}
+
+function render() {
+    const s = STEPS[step];
+    const pct = ((step + 1) / TOTAL) * 100;
+    setTimeout(updateCookieBtnPos, 0);
+
+    const inner = document.getElementById('form-inner');
+    inner.classList.remove('slide');
+    void inner.offsetWidth;
+    inner.classList.add('slide');
+    inner.innerHTML = '';
+
+    // Header with optional line break
+    const headerText = s.header.replace('\n', ' ');
+    const h = el('h2', 'q-header');
+    h.innerHTML = s.header.replace('\n', '<br>');
+    inner.appendChild(h);
+
+    if (s.subline) {
+        const sub = el('p', 'q-subline', s.subline);
+        inner.appendChild(sub);
+    }
+
+    if      (s.type === 'choice')   renderChoice(inner, s);
+    else if (s.type === 'stepper')  renderStepper(inner, s);
+    else if (s.type === 'text')     renderText(inner, s);
+    else if (s.type === 'name')     renderName(inner, s);
+    else if (s.type === 'yesno')    renderYesNo(inner, s);
+    else if (s.type === 'textarea') renderTextarea(inner, s);
+    else if (s.type === 'upload')   renderUpload(inner, s);
+    else if (s.type === 'contact')  renderContact(inner, s);
+}
+
+/* Validation helpers */
+function isValidEmail(v) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim());
+}
+function isValidPhone(v) {
+    // Allow +, spaces, dashes, parens; min 7 digits
+    const digits = v.replace(/\D/g, '');
+    return digits.length >= 7 && /^[+\d][\d\s\-().]{5,}$/.test(v.trim());
+}
+
+function setBtn(btn, enabled) {
+    btn.disabled = !enabled;
+    btn.style.opacity = enabled ? '1' : '0.4';
+    btn.style.cursor  = enabled ? 'pointer' : 'not-allowed';
+}
+
+function renderChoice(parent, s) {
+    const list = el('div', 'options-list');
+    s.options.forEach(opt => {
+        const b = el('button', 'opt-btn');
+        b.textContent = opt;
+        if (selectedChoice === opt) b.classList.add('selected');
+        b.onclick = () => {
+            list.querySelectorAll('.opt-btn').forEach(x => x.classList.remove('selected'));
+            b.classList.add('selected');
+            selectedChoice = opt;
+            setBtn(btn, true);
+        };
+        list.appendChild(b);
+    });
+    parent.appendChild(list);
+
+    const btnRow = el('div', 'btn-row');
+    const back = el('button', 'btn-zurueck', '← Zurück');
+    back.onclick = goBack;
+    const btn = el('button', 'btn-weiter', 'Weiter →');
+    setBtn(btn, !!selectedChoice);
+    btn.onclick = () => {
+        if (!selectedChoice) return;
+        answers[s.id] = selectedChoice;
+        next();
+    };
+    btnRow.append(back, btn);
+    parent.appendChild(btnRow);
+}
+
+function renderStepper(parent, s) {
+    const val = answers[s.id] !== undefined ? answers[s.id] : s.default;
+
+    const wrap = el('div', 'stepper-wrap');
+    const row  = el('div', 'stepper-row');
+
+    const minus = el('button', 'step-btn', '−');
+    const input = el('input');
+    input.className = 'step-input';
+    input.type = 'number';
+    input.value = val;
+    const plus = el('button', 'step-btn', '+');
+
+    minus.onclick = () => {
+        let v = parseInt(input.value) - s.step;
+        if (s.min !== undefined) v = Math.max(s.min, v);
+        input.value = v;
+    };
+    plus.onclick = () => {
+        let v = parseInt(input.value) + s.step;
+        if (s.max !== undefined) v = Math.min(s.max, v);
+        input.value = v;
+    };
+
+    row.append(minus, input, plus);
+    wrap.appendChild(row);
+    parent.appendChild(wrap);
+
+    // Stepper always has a valid value — Weiter always enabled
+    const btnRow = el('div', 'btn-row');
+    const back  = el('button', 'btn-zurueck', '← Zurück');
+    back.onclick = goBack;
+    const fwd = el('button', 'btn-weiter', 'Weiter →');
+    fwd.onclick = () => { answers[s.id] = parseInt(input.value); next(); };
+    btnRow.append(back, fwd);
+    parent.appendChild(btnRow);
+}
+
+function renderText(parent, s) {
+    const input = el('input');
+    input.className = 'field';
+    input.type = 'text';
+    input.placeholder = s.placeholder || '';
+    input.value = answers[s.id] || '';
+    parent.appendChild(input);
+
+    // Quick-select chips for job_title step
+    if (s.id === 'job_title') {
+        const chips = el('div', 'quick-chips');
+        ['Pflegefachmann/Pflegefachfrau', 'Arzt/Ärztin', 'Therapeut/Therapeutin'].forEach(label => {
+            const chip = el('button', 'quick-chip', label);
+            chip.onclick = () => {
+                input.value = label;
+                check();
+            };
+            chips.appendChild(chip);
+        });
+        parent.appendChild(chips);
+    }
+
+    const btnRow = el('div', 'btn-row');
+    const back   = el('button', 'btn-zurueck', '← Zurück');
+    back.onclick  = goBack;
+    const fwd    = el('button', 'btn-weiter', 'Weiter →');
+
+    function check() { setBtn(fwd, input.value.trim().length > 0); }
+    input.addEventListener('input', check);
+    check();
+
+    fwd.onclick = () => {
+        if (!input.value.trim()) return;
+        answers[s.id] = input.value.trim();
+        next();
+    };
+    btnRow.append(back, fwd);
+    parent.appendChild(btnRow);
+
+    input.addEventListener('keydown', e => { if (e.key === 'Enter' && !fwd.disabled) fwd.click(); });
+    setTimeout(() => input.focus(), 50);
+}
+
+function renderName(parent, s) {
+    const group = el('div', 'field-group');
+    const first = field('text',  'Vorname',  answers['first_name']);
+    const last  = field('text',  'Nachname', answers['last_name']);
+    group.append(first, last);
+    parent.appendChild(group);
+
+    const btnRow = el('div', 'btn-row');
+    const back   = el('button', 'btn-zurueck', '← Zurück');
+    back.onclick  = goBack;
+    const fwd    = el('button', 'btn-weiter', 'Weiter →');
+
+    function check() { setBtn(fwd, first.value.trim().length > 0 && last.value.trim().length > 0); }
+    first.addEventListener('input', check);
+    last.addEventListener('input', check);
+    check();
+
+    fwd.onclick = () => {
+        if (!first.value.trim() || !last.value.trim()) return;
+        answers['first_name'] = first.value.trim();
+        answers['last_name']  = last.value.trim();
+        next();
+    };
+    btnRow.append(back, fwd);
+    parent.appendChild(btnRow);
+    setTimeout(() => first.focus(), 50);
+}
+
+function renderUpload(parent, s) {
+    const dropzone = el('div', 'upload-dropzone');
+    dropzone.innerHTML = `
+        <div class="upload-icon">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#0e8fb5" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="16 16 12 12 8 16"></polyline>
+                <line x1="12" y1="12" x2="12" y2="21"></line>
+                <path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"></path>
+            </svg>
+        </div>
+        <p class="upload-text"><span class="upload-link">Klicke hier</span> oder ziehe Dateien hierher</p>
+        <p class="upload-hint">Maximal 10MB pro Datei · Bis zu 5 Dateien</p>
+        <p class="upload-hint">PDF, JPG, PNG, DOCX</p>
+    `;
+    const fileInput = el('input');
+    fileInput.type = 'file';
+    fileInput.multiple = true;
+    fileInput.accept = '.pdf,.jpg,.jpeg,.png,.docx';
+    fileInput.style.display = 'none';
+    fileInput.addEventListener('change', () => updateFileList());
+    dropzone.appendChild(fileInput);
+
+    dropzone.addEventListener('click', () => fileInput.click());
+    dropzone.addEventListener('dragover', e => { e.preventDefault(); dropzone.classList.add('dragover'); });
+    dropzone.addEventListener('dragleave', () => dropzone.classList.remove('dragover'));
+    dropzone.addEventListener('drop', e => {
+        e.preventDefault();
+        dropzone.classList.remove('dragover');
+        fileInput.files = e.dataTransfer.files;
+        updateFileList();
+    });
+
+    const fileList = el('div', 'upload-filelist');
+    parent.appendChild(dropzone);
+    parent.appendChild(fileList);
+
+    function updateFileList() {
+        fileList.innerHTML = '';
+        Array.from(fileInput.files).forEach(f => {
+            const item = el('div', 'upload-file-item', '📄 ' + f.name);
+            fileList.appendChild(item);
+        });
+        answers['bu_files'] = fileInput.files;
+    }
+
+    const btnRow = el('div', 'btn-row');
+    const back = el('button', 'btn-zurueck', '← Zurück');
+    back.onclick = goBack;
+    const fwd = el('button', 'btn-weiter', 'Weiter →');
+    fwd.onclick = () => next();
+    btnRow.append(back, fwd);
+    parent.appendChild(btnRow);
+}
+
+function renderYesNo(parent, s) {
+    const saved = answers[s.id] || null;
+    let selected = saved;
+
+    const list = el('div', 'options-list');
+    ['Ja', 'Nein'].forEach(opt => {
+        const b = el('button', 'opt-btn opt-btn-check');
+        const span = el('span', null, opt);
+        const check = el('span', 'opt-check');
+        check.innerHTML = '&#10003;';
+        b.append(span, check);
+        if (selected === opt) b.classList.add('selected');
+        b.onclick = () => {
+            list.querySelectorAll('.opt-btn').forEach(x => x.classList.remove('selected'));
+            b.classList.add('selected');
+            selected = opt;
+            setBtn(fwd, true);
+        };
+        list.appendChild(b);
+    });
+    parent.appendChild(list);
+
+    const btnRow = el('div', 'btn-row');
+    const back = el('button', 'btn-zurueck', '← Zurück');
+    back.onclick = goBack;
+    const fwd = el('button', 'btn-weiter', 'Weiter →');
+    setBtn(fwd, !!selected);
+    fwd.onclick = () => {
+        if (!selected) return;
+        answers[s.id] = selected;
+        next();
+    };
+    btnRow.append(back, fwd);
+    parent.appendChild(btnRow);
+}
+
+function renderTextarea(parent, s) {
+    const ta = document.createElement('textarea');
+    ta.className = 'field field-textarea';
+    ta.placeholder = s.placeholder || '';
+    ta.value = answers[s.id] || '';
+    parent.appendChild(ta);
+
+    const btnRow = el('div', 'btn-row');
+    const back = el('button', 'btn-zurueck', '← Zurück');
+    back.onclick = goBack;
+    const fwd = el('button', 'btn-weiter', 'Weiter →');
+    fwd.onclick = () => { answers[s.id] = ta.value.trim(); next(); };
+    btnRow.append(back, fwd);
+    parent.appendChild(btnRow);
+    setTimeout(() => ta.focus(), 50);
+}
+
+function renderContact(parent, s) {
+    const group = el('div', 'field-group');
+    const emailInput = field('email', 'beispiel@gmx.de',                   answers['email']);
+    const phoneInput = field('tel',   'Geben Sie Ihre Telefonnummer ein',   answers['phone']);
+    group.append(emailInput, phoneInput);
+    parent.appendChild(group);
+
+    // Inline error hints
+    const emailErr = el('span', 'field-err', 'Bitte gib eine gültige E-Mail-Adresse ein.');
+    const phoneErr = el('span', 'field-err', 'Bitte gib eine gültige Telefonnummer ein.');
+    emailErr.style.cssText = 'display:none;color:#dc2626;font-size:0.95rem;margin-top:-8px;';
+    phoneErr.style.cssText = 'display:none;color:#dc2626;font-size:0.95rem;margin-top:-8px;';
+    group.insertBefore(emailErr, phoneInput);
+    group.appendChild(phoneErr);
+
+    const cbGroup = el('div', 'cb-group');
+
+    const cb1 = checkbox(answers['privacy']);
+    cb1.span.innerHTML = 'Ich habe die <a href="https://www.starkfinanz.de/datenschutz" target="_blank" rel="noopener">Datenschutzhinweise</a> gelesen und bin damit einverstanden, dass ich telefonisch oder per E-Mail kontaktiert werde, um eine individuelle Beratung zu erhalten. Ich weiss, dass dies freiwillig ist und ich die Einwilligung jederzeit widerrufen kann.';
+
+    const cb2 = checkbox(answers['info']);
+    cb2.span.innerHTML = 'Ich bestätige, die <a href="https://www.starkfinanz.de/erstinformation" target="_blank" rel="noopener">Erstinformation</a> gelesen und gespeichert zu haben.';
+
+    cbGroup.append(cb1.label, cb2.label);
+    parent.appendChild(cbGroup);
+
+    const btnRow  = el('div', 'btn-row-end');
+    const back    = el('button', 'btn-zurueck', '← Zurück');
+    back.onclick   = goBack;
+    const submit  = el('button', 'btn-anfragen', 'Beratung anfragen');
+
+    function isReady() {
+        return isValidEmail(emailInput.value) &&
+               isValidPhone(phoneInput.value) &&
+               cb1.input.checked &&
+               cb2.input.checked;
+    }
+
+    function updateState() {
+        submit.classList.toggle('ready', isReady());
+        setBtn(submit, isReady());
+    }
+
+    // Show validation hints on blur
+    emailInput.addEventListener('blur', () => {
+        emailErr.style.display = (emailInput.value && !isValidEmail(emailInput.value)) ? 'block' : 'none';
+    });
+    emailInput.addEventListener('input', () => {
+        if (isValidEmail(emailInput.value)) emailErr.style.display = 'none';
+        updateState();
+    });
+    phoneInput.addEventListener('blur', () => {
+        phoneErr.style.display = (phoneInput.value && !isValidPhone(phoneInput.value)) ? 'block' : 'none';
+    });
+    phoneInput.addEventListener('input', () => {
+        if (isValidPhone(phoneInput.value)) phoneErr.style.display = 'none';
+        updateState();
+    });
+    cb1.input.addEventListener('change', updateState);
+    cb2.input.addEventListener('change', updateState);
+    updateState();
+
+    submit.onclick = () => {
+        if (!isReady()) return;
+        answers['email']   = emailInput.value.trim();
+        answers['phone']   = phoneInput.value.trim();
+        answers['privacy'] = true;
+        answers['info']    = true;
+        showSuccess();
+    };
+
+    btnRow.append(back, submit);
+    parent.appendChild(btnRow);
+    setTimeout(() => emailInput.focus(), 50);
+}
+
+function showSuccess() {
+
+    const inner = document.getElementById('form-inner');
+    inner.classList.remove('slide');
+    void inner.offsetWidth;
+    inner.classList.add('slide');
+    inner.innerHTML = '';
+
+    const wrap = el('div', 'success-wrap');
+    wrap.innerHTML = `
+        <div class="success-icon">✅</div>
+        <h2 class="q-header">Vielen Dank${answers['first_name'] ? ',&nbsp;' + answers['first_name'] : ''}!</h2>
+        <p class="success-sub">Deine Anfrage ist erfolgreich bei uns eingegangen.<br>Wir melden uns in Kürze bei dir.</p>
+    `;
+    inner.appendChild(wrap);
+}
+
+/* ── Helpers ── */
+function el(tag, cls, text) {
+    const e = document.createElement(tag);
+    if (cls)  e.className = cls;
+    if (text !== undefined) e.textContent = text;
+    return e;
+}
+
+function field(type, placeholder, value) {
+    const i = el('input');
+    i.className = 'field';
+    i.type = type;
+    i.placeholder = placeholder;
+    i.value = value || '';
+    return i;
+}
+
+function checkbox(checked) {
+    const label = el('label', 'cb-label');
+    const input = el('input');
+    input.type = 'checkbox';
+    input.checked = !!checked;
+    const span = el('span');
+    label.append(input, span);
+    return { label, input, span };
+}
+</script>
+<script>
+function updateCookieBtnPos() {
+    const btn = document.querySelector('.cookie-btn');
+    if (!btn) return;
+    // Pick the footer that is currently visible
+    const formActive = document.getElementById('form-page').classList.contains('active');
+    const footer = formActive
+        ? document.querySelector('#form-page .site-footer')
+        : document.querySelector('#landing-page .site-footer');
+    if (footer) {
+        btn.style.bottom = (footer.offsetHeight + 12) + 'px';
+    }
+}
+window.addEventListener('resize', updateCookieBtnPos);
+window.addEventListener('load', updateCookieBtnPos);
+document.addEventListener('DOMContentLoaded', updateCookieBtnPos);
+</script>
+
+<!-- ── COOKIE BUTTON ── -->
+<button class="cookie-btn" onclick="openCookieBanner()" title="Cookie-Einstellungen">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="3"></circle>
+        <path d="M19.07 4.93a10 10 0 0 1 1.41 14.14M4.93 4.93A10 10 0 0 0 3.52 19.07M19.07 19.07A10 10 0 0 1 4.93 19.07M4.93 4.93A10 10 0 0 1 19.07 4.93"></path>
+        <line x1="12" y1="1" x2="12" y2="3"></line>
+        <line x1="12" y1="21" x2="12" y2="23"></line>
+        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+        <line x1="1" y1="12" x2="3" y2="12"></line>
+        <line x1="21" y1="12" x2="23" y2="12"></line>
+        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+</button>
+
+<!-- ── COOKIE BANNER ── -->
+<div id="cookie-overlay" class="cookie-overlay" onclick="closeCookieBanner(event)">
+    <div class="cookie-modal">
+
+        <!-- VIEW 1: Simple -->
+        <div id="cookie-view-simple">
+            <div class="cookie-modal-header">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0e8fb5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                </svg>
+                <span class="cookie-modal-title">Wir respektieren deine Privatsphäre</span>
+            </div>
+            <p class="cookie-modal-text">
+                Wir verwenden Cookies, um dir das bestmögliche Erlebnis auf unserer Website zu bieten. Weitere Informationen findest du in unserer
+                <a href="https://www.starkfinanz.de/datenschutz" target="_blank" rel="noopener">Datenschutzerklärung</a>.
+            </p>
+            <div class="cookie-modal-btns">
+                <button class="cookie-accept" onclick="closeCookieBanner()">Alle akzeptieren</button>
+                <button class="cookie-necessary" onclick="closeCookieBanner()">Nur Notwendige</button>
+            </div>
+            <div class="cookie-settings-row">
+                <button class="cookie-settings-link" onclick="showCookieSettings()">Einstellungen anpassen ›</button>
+            </div>
+            <div class="cookie-modal-footer">
+                <a href="https://www.starkfinanz.de/impressum" target="_blank" rel="noopener">Impressum</a>
+                <a href="https://www.starkfinanz.de/datenschutz" target="_blank" rel="noopener">Datenschutzerklärung</a>
+            </div>
+        </div>
+
+        <!-- VIEW 2: Settings -->
+        <div id="cookie-view-settings" style="display:none;">
+            <!-- Scrollable area -->
+            <div class="cookie-scroll-area">
+                <div class="cookie-modal-header" style="margin-bottom:6px;">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0e8fb5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                    </svg>
+                    <span class="cookie-modal-title">Cookie-Einstellungen</span>
+                </div>
+                <p class="cookie-modal-text" style="margin-bottom:14px;">Hier kannst du deine Cookie-Einstellungen individuell anpassen.</p>
+
+                <div class="cookie-categories">
+                    <!-- Essenzielle -->
+                    <div class="cookie-category">
+                        <div class="cookie-cat-top">
+                            <div>
+                                <div class="cookie-cat-name">Essenzielle Cookies</div>
+                                <div class="cookie-cat-sub">Immer aktiv</div>
+                            </div>
+                            <label class="cookie-toggle cookie-toggle--disabled">
+                                <input type="checkbox" checked disabled>
+                                <span class="cookie-toggle-track"></span>
+                            </label>
+                        </div>
+                        <p class="cookie-cat-desc">Diese Cookies sind für die grundlegende Funktionalität der Website notwendig und können nicht deaktiviert werden.</p>
+                        <button class="cookie-cat-details" onclick="toggleCookieDetails(this)">Details anzeigen</button>
+                    </div>
+                    <!-- Funktionale -->
+                    <div class="cookie-category">
+                        <div class="cookie-cat-top">
+                            <div class="cookie-cat-name">Funktionale Cookies</div>
+                            <label class="cookie-toggle">
+                                <input type="checkbox" id="ck-functional">
+                                <span class="cookie-toggle-track"></span>
+                            </label>
+                        </div>
+                        <p class="cookie-cat-desc">Diese Cookies ermöglichen es der Website, erweiterte Funktionalität und Personalisierung zu bieten, z. B. für Videos, Formulare, Sprache.</p>
+                        <button class="cookie-cat-details" onclick="toggleCookieDetails(this)">Details anzeigen</button>
+                    </div>
+                    <!-- Performance -->
+                    <div class="cookie-category">
+                        <div class="cookie-cat-top">
+                            <div class="cookie-cat-name">Performance / Analyse</div>
+                            <label class="cookie-toggle">
+                                <input type="checkbox" id="ck-analytics">
+                                <span class="cookie-toggle-track"></span>
+                            </label>
+                        </div>
+                        <p class="cookie-cat-desc">Mit diesen Cookies können wir Besuche und Traffic-Quellen messen, um die Performance unserer Website zu verbessern.</p>
+                    </div>
+                    <!-- Marketing -->
+                    <div class="cookie-category">
+                        <div class="cookie-cat-top">
+                            <div class="cookie-cat-name">Marketing</div>
+                            <label class="cookie-toggle">
+                                <input type="checkbox" id="ck-marketing">
+                                <span class="cookie-toggle-track"></span>
+                            </label>
+                        </div>
+                        <p class="cookie-cat-desc">Diese Cookies werden genutzt, um Werbung relevanter für dich zu machen und Anzeigen auf anderen Websites zu personalisieren.</p>
+                    </div>
+                    <!-- Sonstige -->
+                    <div class="cookie-category">
+                        <div class="cookie-cat-top">
+                            <div class="cookie-cat-name">Sonstige</div>
+                            <label class="cookie-toggle">
+                                <input type="checkbox" id="ck-other">
+                                <span class="cookie-toggle-track"></span>
+                            </label>
+                        </div>
+                        <p class="cookie-cat-desc">Sonstige Cookies, die keiner der anderen Kategorien zugeordnet werden konnten.</p>
+                    </div>
+            </div>
+
+            </div><!-- /.cookie-scroll-area -->
+
+            <!-- Sticky bottom -->
+            <div class="cookie-sticky-footer">
+                <div class="cookie-modal-btns">
+                    <button class="cookie-accept" onclick="closeCookieBanner()">Auswahl speichern</button>
+                    <button class="cookie-necessary" onclick="closeCookieBanner()">Alle akzeptieren</button>
+                </div>
+                <div class="cookie-settings-row">
+                    <button class="cookie-settings-link" onclick="closeCookieBanner()">Nur Notwendige</button>
+                </div>
+                <div class="cookie-modal-footer">
+                    <a href="https://www.starkfinanz.de/impressum" target="_blank" rel="noopener">Impressum</a>
+                    <a href="https://www.starkfinanz.de/datenschutz" target="_blank" rel="noopener">Datenschutzerklärung</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+function openCookieBanner() {
+    document.getElementById('cookie-view-simple').style.display = '';
+    document.getElementById('cookie-view-settings').style.display = 'none';
+    document.querySelector('.cookie-modal').classList.remove('settings-open');
+    document.getElementById('cookie-overlay').classList.add('active');
+}
+function closeCookieBanner(e) {
+    if (e && e.target !== document.getElementById('cookie-overlay')) return;
+    document.getElementById('cookie-overlay').classList.remove('active');
+}
+function showCookieSettings() {
+    document.getElementById('cookie-view-simple').style.display = 'none';
+    document.getElementById('cookie-view-settings').style.display = '';
+    const modal = document.querySelector('.cookie-modal');
+    modal.classList.add('settings-open');
+    // Calculate available height: viewport minus footer minus equal top margin
+    const formActive = document.getElementById('form-page').classList.contains('active');
+    const footer = formActive
+        ? document.querySelector('#form-page .site-footer')
+        : document.querySelector('#landing-page .site-footer');
+    const footerH = footer ? footer.offsetHeight : 0;
+    const gap = footerH + 16;
+    const maxH = window.innerHeight - gap * 2;
+    modal.style.setProperty('--cookie-max-height', maxH + 'px');
+}
+function toggleCookieDetails(btn) {
+    const isOpen = btn.textContent === 'Details ausblenden';
+    btn.textContent = isOpen ? 'Details anzeigen' : 'Details ausblenden';
+}
+</script>
+</body>
+</html>
