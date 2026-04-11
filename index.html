@@ -1112,8 +1112,10 @@ let TOTAL = 0;
 let step = 0;
 const answers = {};
 let selectedChoice = null;
+let currentCategory = null;
 
 function startForm(category) {
+    currentCategory = category;
     STEPS = STEPS_BY_CATEGORY[category];
     TOTAL = STEPS.length;
     step = 0;
@@ -1515,13 +1517,32 @@ function renderContact(parent, s) {
     cb2.input.addEventListener('change', updateState);
     updateState();
 
-    submit.onclick = () => {
+    submit.onclick = async () => {
         if (!isReady()) return;
-        answers['email']   = emailInput.value.trim();
-        answers['phone']   = phoneInput.value.trim();
-        answers['privacy'] = true;
-        answers['info']    = true;
-        showSuccess();
+        answers['email']    = emailInput.value.trim();
+        answers['phone']    = phoneInput.value.trim();
+        answers['privacy']  = true;
+        answers['info']     = true;
+
+        submit.disabled     = true;
+        submit.textContent  = 'Wird gesendet …';
+
+        try {
+            const res = await fetch('/api/submit', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ ...answers, category: currentCategory }),
+            });
+            if (!res.ok) throw new Error('server');
+            showSuccess();
+        } catch (err) {
+            submit.disabled    = false;
+            submit.textContent = 'Beratung anfragen';
+            const errMsg = el('p', '', 'Es ist ein Fehler aufgetreten. Bitte versuche es erneut.');
+            errMsg.style.cssText = 'color:#dc2626;font-size:0.9rem;text-align:center;margin-top:8px;';
+            btnRow.appendChild(errMsg);
+            setTimeout(() => errMsg.remove(), 5000);
+        }
     };
 
     btnRow.append(back, submit);
