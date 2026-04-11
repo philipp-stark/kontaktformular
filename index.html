@@ -245,6 +245,7 @@
 
         /* ── COOKIE BUTTON ── */
         .cookie-btn {
+            display: none;
             position: fixed;
             bottom: 76px;
             left: 20px;
@@ -1605,7 +1606,7 @@ document.addEventListener('DOMContentLoaded', updateCookieBtnPos);
 </script>
 
 <!-- ── COOKIE BUTTON ── -->
-<button class="cookie-btn" onclick="openCookieBanner()" title="Cookie-Einstellungen">
+<button class="cookie-btn" onclick="openCookieBanner()" title="Cookie-Einstellungen" style="display:none">
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <circle cx="12" cy="12" r="3"></circle>
         <path d="M19.07 4.93a10 10 0 0 1 1.41 14.14M4.93 4.93A10 10 0 0 0 3.52 19.07M19.07 19.07A10 10 0 0 1 4.93 19.07M4.93 4.93A10 10 0 0 1 19.07 4.93"></path>
