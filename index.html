@@ -714,7 +714,7 @@
         }
 
         .cb-label span {
-            font-size: 1.08rem;
+            font-size: 0.756rem;
             color: #0f1e42;
             line-height: 1.6;
         }
@@ -846,7 +846,7 @@
             .btn-anfragen { padding: 15px 20px; font-size: 1rem; }
 
             /* Checkboxes */
-            .cb-label span { font-size: 0.9rem; }
+            .cb-label span { font-size: 0.63rem; }
             .cb-label input[type="checkbox"] { width: 20px; height: 20px; }
 
             /* Textarea */
@@ -1458,7 +1458,7 @@ function renderContact(parent, s) {
     const cbGroup = el('div', 'cb-group');
 
     const cb1 = checkbox(answers['privacy']);
-    cb1.span.innerHTML = 'Ich habe die <a href="https://www.starkfinanz.de/datenschutz" target="_blank" rel="noopener">Datenschutzhinweise</a> gelesen und bin damit einverstanden, dass ich telefonisch oder per E-Mail kontaktiert werde, um eine individuelle Beratung zu erhalten. Ich weiss, dass dies freiwillig ist und ich die Einwilligung jederzeit widerrufen kann.';
+    cb1.span.innerHTML = 'Ich habe die <a href="https://www.starkfinanz.de/datenschutz" target="_blank" rel="noopener">Datenschutzerklärung</a> gelesen und willige ein, dass meine angegebenen Daten – einschließlich meiner Finanz- und Einkommensdaten – zur Vorbereitung und Durchführung einer individuellen Finanzberatung verarbeitet werden und ich zu diesem Zweck telefonisch oder per E-Mail kontaktiert werden darf. Ich weiß, dass diese Einwilligung freiwillig ist und ich sie jederzeit mit Wirkung für die Zukunft widerrufen kann.';
 
     const cb2 = checkbox(answers['info']);
     cb2.span.innerHTML = 'Ich bestätige, die <a href="https://www.starkfinanz.de/erstinformation" target="_blank" rel="noopener">Erstinformation</a> gelesen und gespeichert zu haben.';
