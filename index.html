@@ -1594,7 +1594,7 @@ function updateCookieBtnPos() {
             btn.style.bottom = '20px';
         } else {
             // Footer is visible — sit just above it
-            btn.style.bottom = (footer.offsetHeight + 12) + 'px';
+            btn.style.bottom = (window.innerHeight - footerTop + 12) + 'px';
         }
     }
 }
