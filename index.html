@@ -804,7 +804,7 @@
 
             /* ── Landing ── */
             #landing-page { min-height: 100vh; }
-            #landing { padding: 40px 20px 32px; justify-content: flex-start; padding-top: 44px; }
+            #landing { padding: 40px 20px 32px; justify-content: center; }
             #landing h1 { font-size: 1.75rem; margin-bottom: 10px; }
             #landing .subline { font-size: 1rem; margin-bottom: 36px; }
 
@@ -816,8 +816,7 @@
             #form-page { min-height: 100vh; }
             .form-body {
                 padding: 28px 18px 40px;
-                justify-content: flex-start;
-                padding-top: 28px;
+                justify-content: center;
             }
             .form-inner { gap: 24px; }
 
@@ -885,7 +884,9 @@
             .cookie-btn { bottom: 64px; left: 14px; }
 
             /* ── Footer ── */
-            .site-footer { padding: 14px 18px; gap: 10px; }
+            .site-footer { padding: 14px 18px; gap: 10px; flex-direction: column; align-items: flex-start; }
+            .footer-links { flex-direction: column; gap: 8px; }
+            .footer-links a, .site-footer .copy { font-size: 0.7rem; }
         }
     </style>
 </head>
