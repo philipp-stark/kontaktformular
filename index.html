@@ -795,9 +795,97 @@
         .slide { animation: slideIn 0.25s ease forwards; }
 
         @media (max-width: 480px) {
-            .form-body { padding: 31px 21px 52px; justify-content: flex-start; padding-top: 31px; }
-            .step-btn { width: 62px; height: 62px; }
-            .step-input { height: 62px; font-size: 1.69rem; }
+            /* Reset zoom — not reliable on iOS Safari */
+            body {
+                zoom: 1;
+                min-height: 100vh;
+                font-size: 16px;
+            }
+
+            /* ── Landing ── */
+            #landing-page { min-height: 100vh; }
+            #landing { padding: 40px 20px 32px; justify-content: flex-start; padding-top: 44px; }
+            #landing h1 { font-size: 1.75rem; margin-bottom: 10px; }
+            #landing .subline { font-size: 1rem; margin-bottom: 36px; }
+
+            .category-buttons { gap: 11px; }
+            .category-btn { padding: 16px 20px; font-size: 1rem; border-radius: 10px; }
+            .category-btn .arrow { font-size: 1.15rem; }
+
+            /* ── Form page ── */
+            #form-page { min-height: 100vh; }
+            .form-body {
+                padding: 28px 18px 40px;
+                justify-content: flex-start;
+                padding-top: 28px;
+            }
+            .form-inner { gap: 24px; }
+
+            .q-header { font-size: 1.45rem; }
+            .q-subline { font-size: 0.93rem; margin-top: -14px; }
+
+            /* Choice options */
+            .opt-btn { padding: 15px 18px; font-size: 1rem; }
+
+            /* Text fields */
+            .field { padding: 15px 16px; font-size: 1rem; border-radius: 8px; }
+
+            /* Stepper */
+            .stepper-row { max-width: 100%; }
+            .step-btn { width: 54px; height: 54px; font-size: 1.5rem; }
+            .step-input { height: 54px; font-size: 1.5rem; }
+
+            /* Nav buttons */
+            .btn-row { gap: 10px; max-width: 100%; }
+            .btn-weiter { padding: 15px 20px; font-size: 1rem; }
+            .btn-zurueck { padding: 15px 18px; font-size: 1rem; }
+            .btn-weiter-solo { padding: 15px 40px; font-size: 1rem; }
+            .btn-row-end { gap: 10px; }
+            .btn-anfragen { padding: 15px 20px; font-size: 1rem; }
+
+            /* Checkboxes */
+            .cb-label span { font-size: 0.9rem; }
+            .cb-label input[type="checkbox"] { width: 20px; height: 20px; }
+
+            /* Textarea */
+            .field-textarea { min-height: 110px; }
+
+            /* Quick chips */
+            .quick-chips { gap: 6px; }
+            .quick-chip { font-size: 0.75rem; padding: 6px 12px; }
+
+            /* Upload */
+            .upload-dropzone { padding: 28px 16px; }
+
+            /* Success */
+            .success-icon { font-size: 3.5rem; }
+            .success-sub { font-size: 1rem; }
+
+            /* ── Cookie banner ── */
+            .cookie-modal {
+                margin: 0;
+                border-radius: 16px 16px 0 0;
+                max-width: 100%;
+                padding: 22px 20px 18px;
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                right: 0;
+            }
+            .cookie-overlay { align-items: flex-end; }
+            .cookie-modal.settings-open {
+                border-radius: 16px 16px 0 0;
+                max-height: 90vh;
+            }
+            .cookie-scroll-area { padding: 20px 20px 12px; }
+            .cookie-sticky-footer { padding: 12px 20px 18px; }
+            .cookie-accept, .cookie-necessary { padding: 12px 8px; font-size: 0.82rem; }
+
+            /* ── Cookie button ── */
+            .cookie-btn { bottom: 64px; left: 14px; }
+
+            /* ── Footer ── */
+            .site-footer { padding: 14px 18px; gap: 10px; }
         }
     </style>
 </head>
