@@ -804,7 +804,7 @@
 
             /* ── Landing ── */
             #landing-page { min-height: 100vh; }
-            #landing { padding: 40px 20px 32px; justify-content: center; }
+            #landing { padding: 40px 20px 32px; justify-content: center; min-height: 100svh; }
             #landing h1 { font-size: 1.75rem; margin-bottom: 10px; }
             #landing .subline { font-size: 1rem; margin-bottom: 36px; }
 
@@ -817,6 +817,7 @@
             .form-body {
                 padding: 28px 18px 40px;
                 justify-content: center;
+                min-height: 100svh;
             }
             .form-inner { gap: 24px; }
 
@@ -850,8 +851,14 @@
             .field-textarea { min-height: 110px; }
 
             /* Quick chips */
-            .quick-chips { gap: 6px; }
-            .quick-chip { font-size: 0.75rem; padding: 6px 12px; }
+            .quick-chips {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 8px;
+                margin-top: 12px;
+                margin-bottom: 4px;
+            }
+            .quick-chip { font-size: 0.9rem; padding: 12px 16px; text-align: center; }
 
             /* Upload */
             .upload-dropzone { padding: 28px 16px; }
