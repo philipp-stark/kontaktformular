@@ -1093,15 +1093,9 @@ const STEPS_BY_CATEGORY = {
     ],
     bu: [
         {
-            id: 'bu_exists',
+            id: 'arbeitskraft_abgesichert',
             type: 'yesno',
-            header: 'Hast du bereits eine\nBerufsunfähigkeitsversicherung?'
-        },
-        {
-            id: 'bu_upload',
-            type: 'upload',
-            header: 'Bitte lade deine aktuelle\nBerufsunfähigkeitsversicherung\nhier hoch (optional)',
-            subline: 'Bitte lade hier deine aktuelle BU hoch'
+            header: 'Hast du deine Arbeitskraft\nbereits abgesichert?'
         },
         ...SHARED_STEPS
     ]
@@ -1138,10 +1132,6 @@ function goBack() {
         if (STEPS[prev] && STEPS[prev].id === 'weitere_themen_inhalt' && answers['weitere_themen'] === 'Nein') {
             prev--;
         }
-        // Skip upload step when going back if "Nein" was chosen for bu_exists
-        if (STEPS[prev] && STEPS[prev].id === 'bu_upload' && answers['bu_exists'] === 'Nein') {
-            prev--;
-        }
         step = prev;
         selectedChoice = answers[STEPS[step].id] || null;
         render();
@@ -1152,10 +1142,6 @@ function next() {
     let nextStep = step + 1;
     // Skip textarea step if "Nein" was chosen
     if (STEPS[step].id === 'weitere_themen' && answers['weitere_themen'] === 'Nein') {
-        nextStep = step + 2;
-    }
-    // Skip upload step if "Nein" was chosen for bu_exists
-    if (STEPS[step].id === 'bu_exists' && answers['bu_exists'] === 'Nein') {
         nextStep = step + 2;
     }
     if (nextStep < TOTAL) { step = nextStep; selectedChoice = null; render(); }
@@ -1409,11 +1395,9 @@ function renderYesNo(parent, s) {
 
     const list = el('div', 'options-list');
     ['Ja', 'Nein'].forEach(opt => {
-        const b = el('button', 'opt-btn opt-btn-check');
+        const b = el('button', 'opt-btn');
         const span = el('span', null, opt);
-        const check = el('span', 'opt-check');
-        check.innerHTML = '&#10003;';
-        b.append(span, check);
+        b.append(span);
         if (selected === opt) b.classList.add('selected');
         b.onclick = () => {
             list.querySelectorAll('.opt-btn').forEach(x => x.classList.remove('selected'));
