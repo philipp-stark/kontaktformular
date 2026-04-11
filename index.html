@@ -805,7 +805,7 @@
             /* ── Landing ── */
             #landing-page { min-height: 100vh; }
             #landing { padding: 40px 20px 32px; justify-content: center; min-height: 100svh; }
-            #landing h1 { font-size: 1.75rem; margin-bottom: 10px; }
+            #landing h1 { font-size: 2.1rem; margin-bottom: 10px; }
             #landing .subline { font-size: 1rem; margin-bottom: 36px; }
 
             .category-buttons { gap: 11px; }
@@ -821,7 +821,7 @@
             }
             .form-inner { gap: 24px; }
 
-            .q-header { font-size: 1.45rem; }
+            .q-header { font-size: 1.74rem; }
             .q-subline { font-size: 0.93rem; margin-top: -14px; }
 
             /* Choice options */
@@ -1574,16 +1574,23 @@ function checkbox(checked) {
 function updateCookieBtnPos() {
     const btn = document.querySelector('.cookie-btn');
     if (!btn) return;
-    // Pick the footer that is currently visible
     const formActive = document.getElementById('form-page').classList.contains('active');
     const footer = formActive
         ? document.querySelector('#form-page .site-footer')
         : document.querySelector('#landing-page .site-footer');
     if (footer) {
-        btn.style.bottom = (footer.offsetHeight + 12) + 'px';
+        const footerTop = footer.getBoundingClientRect().top;
+        if (footerTop >= window.innerHeight) {
+            // Footer is below the fold — pin button near viewport bottom
+            btn.style.bottom = '20px';
+        } else {
+            // Footer is visible — sit just above it
+            btn.style.bottom = (footer.offsetHeight + 12) + 'px';
+        }
     }
 }
 window.addEventListener('resize', updateCookieBtnPos);
+window.addEventListener('scroll', updateCookieBtnPos, { passive: true });
 window.addEventListener('load', updateCookieBtnPos);
 document.addEventListener('DOMContentLoaded', updateCookieBtnPos);
 </script>
