@@ -17,7 +17,7 @@ const FIELD_LABELS = {
     weitere_themen:        'Weitere Themen?',
     weitere_themen_inhalt: 'Weitere Themen Details',
     thema:                 'Anliegen',
-    bu_exists:             'Bestehende BU-Versicherung',
+    arbeitskraft_abgesichert: 'Arbeitskraft bereits abgesichert?',
 };
 
 function buildRow(label, value) {
