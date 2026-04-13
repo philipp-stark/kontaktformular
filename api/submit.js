@@ -7,18 +7,41 @@ const CATEGORY_LABELS = {
 };
 
 const FIELD_LABELS = {
+    // Gemeinsame Felder
     situation:             'Aktuelle Situation',
-    monthly:               'Monatliche Investition',
-    onetime:               'Einmalige Investition',
+    onetime:               'Vorhandene Rücklagen / Eigenkapital',
+    vertraege:             'Bestehende Lösungen',
     employment:            'Berufliche Situation',
     job_title:             'Berufsbezeichnung',
     net_income:            'Netto-Gehalt',
     birth_year:            'Geburtsjahr',
+    lebensphase:           'Lebenssituation',
+    entscheider:           'Entscheidung',
+    zeitplan:              'Zeitplan',
     weitere_themen:        'Weitere Themen?',
     weitere_themen_inhalt: 'Weitere Themen Details',
     thema:                 'Anliegen',
-    arbeitskraft_abgesichert: 'Arbeitskraft bereits abgesichert?',
+    // Altersvorsorge
+    rente_erwartung:       'Erwartete gesetzliche Rente',
+    rente_bedarf:          'Gewünschtes Einkommen im Alter',
+    // Finanzplanung
+    ziele:                 'Finanzielle Ziele',
+    // Immobilien
+    immo_ziel:             'Ziel bei der Immobilie',
+    // BU
+    bu_situation:          'Arbeitskraft bereits abgesichert?',
+    bu_taetigkeit:         'Art der Tätigkeit',
+    bu_gesundheit:         'Gesundheitszustand',
+    bu_sorge:              'Sorgen bei Ausfall',
+    bu_staat_erwartung:    'Erwartete staatliche Leistung bei BU',
+    bu_fixkosten:          'Monatlicher Bedarf (Fixkosten)',
+    bu_lebensstandard:     'Monatlicher Bedarf (Lebensstandard)',
 };
+
+const EURO_FIELDS = new Set([
+    'net_income', 'rente_erwartung', 'rente_bedarf',
+    'bu_staat_erwartung', 'bu_fixkosten', 'bu_lebensstandard',
+]);
 
 function buildRow(label, value) {
     return `
@@ -41,8 +64,15 @@ function buildEmailHtml(data) {
     const detailRows = Object.entries(data)
         .filter(([k, v]) => !skipKeys.has(k) && v !== undefined && v !== '' && v !== null)
         .map(([k, v]) => {
-            const value = (k === 'monthly' || k === 'net_income') ? `${v} €` : v;
-            return buildRow(FIELD_LABELS[k] || k, value);
+            let display;
+            if (Array.isArray(v)) {
+                display = v.join(', ');
+            } else if (EURO_FIELDS.has(k)) {
+                display = `${Number(v).toLocaleString('de-DE')} €`;
+            } else {
+                display = v;
+            }
+            return buildRow(FIELD_LABELS[k] || k, display);
         })
         .join('');
 
