@@ -428,6 +428,14 @@
         }
 
         /* Question header */
+        .q-trust {
+            font-size: 0.8rem;
+            color: #94a3b8;
+            text-align: center;
+            font-style: italic;
+            margin-bottom: 8px;
+        }
+
         .q-header {
             font-size: clamp(1.625rem, 4.55vw, 2.21rem);
             font-weight: 700;
@@ -564,6 +572,12 @@
             width: 100%;
         }
 
+        .stepper-unit {
+            font-size: 0.85rem;
+            color: #64748b;
+            letter-spacing: 0.03em;
+        }
+
         .stepper-row {
             display: flex;
             align-items: center;
@@ -626,6 +640,12 @@
         }
         .field:focus { border-color: #2563eb; }
         .field::placeholder { color: #64748b; }
+
+        .free-option-wrap {
+            width: 100%;
+            max-width: 546px;
+            margin-top: 10px;
+        }
 
         .field-group {
             display: flex;
@@ -906,8 +926,8 @@
 <!-- ── LANDING PAGE ── -->
 <div id="landing-page">
     <div id="landing">
-        <h1>Visite. Auch bei deinen Finanzen.</h1>
-        <p class="subline">Wobei brauchst du Unterstützung?</p>
+        <h1>Damit du später so lebst, wie du dir das heute vorstellst.</h1>
+        <p class="subline">Womit möchtest du beginnen?</p>
         <div class="category-buttons">
             <button class="category-btn category-btn--featured" onclick="startForm('finanzplanung')">
                 <span>Finanzanalyse / Finanzplanung 360°</span>
@@ -975,16 +995,44 @@ const SHARED_STEPS = [
         placeholder: 'z. B. Pflegefachkraft'
     },
     {
-        id: 'net_income',
-        type: 'stepper',
-        header: 'Wie viel verdienst du aktuell\nnetto pro Monat?',
-        default: 2500, step: 100, min: 0
-    },
-    {
         id: 'birth_year',
         type: 'stepper',
         header: 'In welchem Jahr\nbist du geboren?',
         default: 1990, step: 1, min: 1940, max: 2010
+    },
+    {
+        id: 'net_income',
+        type: 'stepper',
+        header: 'Wie viel verdienst du aktuell\nnetto pro Monat?',
+        subline: 'Damit kann ich einschätzen, wie viel du realistisch zurücklegen kannst.',
+        default: 2500, step: 100, min: 0
+    },
+    {
+        id: 'lebensphase',
+        type: 'choice',
+        header: 'Was beschreibt deine aktuelle\nLebenssituation?',
+        options: ['Single', 'In einer Partnerschaft', 'Verheiratet', 'Mit Kind(ern)']
+    },
+    {
+        id: 'entscheider',
+        type: 'choice',
+        header: 'Triffst du solche Entscheidungen\nalleine?',
+        options: [
+            'Ja, das entscheide ich selbst',
+            'Ich bespreche das mit meinem Partner / meiner Partnerin'
+        ],
+        freeOption: 'Jemand anderes ist dabei'
+    },
+    {
+        id: 'zeitplan',
+        type: 'choice',
+        header: 'Wann planst du, das\nkonkret anzugehen?',
+        options: [
+            'Am liebsten sofort',
+            'In den nächsten 1 bis 3 Monaten',
+            'Irgendwann in diesem Jahr',
+            'Ich informiere mich erstmal nur'
+        ]
     },
     {
         id: 'name',
@@ -1015,40 +1063,63 @@ const STEPS_BY_CATEGORY = {
         {
             id: 'situation',
             type: 'choice',
-            header: 'Was beschreibt deine aktuelle\nSituation am Besten?',
-            subline: 'Was beschreibt deine aktuelle Situation am besten?',
+            header: 'Wie sicher fühlst du dich\nmit deiner Altersvorsorge?',
             options: [
-                'Ich habe noch gar nichts für die Rente',
-                'Ich habe schon etwas, bin aber unsicher ob\'s reicht',
-                'Ich möchte meine bestehende Vorsorge optimieren'
+                'Ich schlafe gut, ich hab das im Griff',
+                'Ich hab was, bin aber nicht sicher ob\'s reicht',
+                'Ich mach mir Sorgen, hab aber noch nichts getan',
+                'Ich hab keine Ahnung, wo ich anfangen soll'
             ]
         },
         {
-            id: 'monthly',
+            id: 'rente_erwartung',
             type: 'stepper',
-            header: 'Wie viel kannst du monatlich für\ndeine Altersvorsorge investieren?',
-            default: 250, step: 10, min: 0
+            header: 'Was glaubst du, wie viel die\ngesetzliche Rente dir später zahlen wird?',
+            subline: 'Schätz einfach. Es geht um dein Gefühl dafür, nicht um Präzision.',
+            default: 1200, step: 50, min: 0, unit: '€ / Monat'
+        },
+        {
+            id: 'rente_bedarf',
+            type: 'stepper',
+            header: 'Und wie viel brauchst du später\nwirklich zum Leben?',
+            subline: 'Der Unterschied zwischen diesen beiden Zahlen ist das, wofür ich da bin.',
+            default: 2000, step: 100, min: 0, unit: '€ / Monat'
         },
         {
             id: 'onetime',
             type: 'choice',
-            header: 'Wie viel kannst du einmalig in\ndeine Altersvorsorge investieren?',
-            options: ['< 2.000 €', '2.000 – 3.500 €', '3.500 – 5.000 €', '> 5.000 €']
+            header: 'Hast du bereits Rücklagen, die du\nlangfristig aufbauen möchtest?',
+            options: ['Nein, noch nichts', 'Ja, unter 5.000 €', 'Ja, 5.000 – 15.000 €', 'Ja, über 15.000 €']
+        },
+        {
+            id: 'vertraege',
+            type: 'choice',
+            header: 'Hast du zur Altersvorsorge\nbereits eigene Lösungen?',
+            options: [
+                'Nein, ich fange bei null an',
+                'Ja, ich möchte prüfen lassen ob sie noch passen',
+                'Ja, und ich bin damit eigentlich zufrieden'
+            ]
         },
         ...SHARED_STEPS
     ],
     immobilien: [
         {
-            id: 'monthly',
-            type: 'stepper',
-            header: 'Wie viel kannst du monatlich für\ndeine Kapitalanlage investieren?',
-            default: 250, step: 10, min: 0
+            id: 'immo_ziel',
+            type: 'choice',
+            header: 'Was ist dein Ziel\nbei der Immobilie?',
+            options: [
+                'Regelmäßige Mieteinnahmen als zweites Einkommen',
+                'Langfristiger Vermögensaufbau / Altersvorsorge',
+                'Ich möchte selbst einziehen',
+                'Ich bin noch unsicher'
+            ]
         },
         {
             id: 'onetime',
-            type: 'stepper',
-            header: 'Wie viel kannst du einmalig in\ndeine Kapitalanlage investieren?',
-            default: 5000, step: 10, min: 0
+            type: 'choice',
+            header: 'Wie viel Eigenkapital könntest du\nfür eine Immobilie einsetzen?',
+            options: ['Noch nichts zurückgelegt', 'Unter 20.000 €', '20.000 – 50.000 €', 'Über 50.000 €']
         },
         ...SHARED_STEPS
     ],
@@ -1056,23 +1127,41 @@ const STEPS_BY_CATEGORY = {
         {
             id: 'situation',
             type: 'choice',
-            header: 'Was beschreibt deine aktuelle\nSituation am Besten?',
+            header: 'Wie klar ist dein\nfinanzieller Plan gerade?',
             options: [
-                'Ich habe noch gar nichts',
-                'Ich möchte meinen bestehenden Plan überprüfen lassen'
+                'Ich habe noch gar keinen Plan',
+                'Ich hab was, bin aber nicht sicher ob\'s reicht',
+                'Ich möchte meinen bestehenden Plan prüfen lassen'
             ]
         },
         {
-            id: 'monthly',
-            type: 'stepper',
-            header: 'Wie viel kannst du monatlich\nfür deinen Plan investieren?',
-            default: 250, step: 10, min: 0
+            id: 'ziele',
+            type: 'choice',
+            multi: true,
+            header: 'Was sind deine finanziellen Ziele?\nMehreres ist möglich.',
+            options: [
+                'Im Alter finanziell unabhängig sein',
+                'Ein Haus oder eine Wohnung kaufen',
+                'Vermögen aufbauen und vermehren',
+                'Familie absichern',
+                'Heute mehr vom Gehalt übrig haben'
+            ]
         },
         {
             id: 'onetime',
             type: 'choice',
-            header: 'Wie viel kannst du einmalig\nin deinen Plan investieren?',
-            options: ['< 2.000 €', '2.000 – 3.500 €', '3.500 – 5.000 €', '> 5.000 €']
+            header: 'Hast du bereits Rücklagen, die du\nlangfristig anlegen möchtest?',
+            options: ['Nein, noch nichts', 'Ja, unter 5.000 €', 'Ja, 5.000 – 15.000 €', 'Ja, über 15.000 €']
+        },
+        {
+            id: 'vertraege',
+            type: 'choice',
+            header: 'Hast du für eines dieser Ziele\nbereits eigene Lösungen?',
+            options: [
+                'Nein, ich fange bei null an',
+                'Ja, ich möchte prüfen lassen ob sie noch passen',
+                'Ja, und ich bin damit eigentlich zufrieden'
+            ]
         },
         ...SHARED_STEPS
     ],
@@ -1081,22 +1170,71 @@ const STEPS_BY_CATEGORY = {
             id: 'thema',
             type: 'textarea',
             header: 'Bei welchem Thema können\nwir dir weiterhelfen?',
-            subline: 'Bitte sei so genau wie möglich:',
-            placeholder: 'Beispiel: Verträge zur BU prüfen, Kinder Vorsorge etc.'
-        },
-        {
-            id: 'monthly',
-            type: 'stepper',
-            header: 'Wie viel kannst du monatlich\nfür dein Anliegen investieren?',
-            default: 250, step: 10, min: 0
+            subline: 'Beschreib es mit eigenen Worten. Kein Fachwissen nötig.',
+            placeholder: 'Beispiel: Ich weiß nicht ob meine BU noch passt. Ich möchte für mein Kind etwas aufbauen.'
         },
         ...SHARED_STEPS
     ],
     bu: [
         {
-            id: 'arbeitskraft_abgesichert',
+            id: 'bu_situation',
             type: 'yesno',
             header: 'Hast du deine Arbeitskraft\nbereits abgesichert?'
+        },
+        {
+            id: 'bu_taetigkeit',
+            type: 'choice',
+            header: 'Was beschreibt deine\nTätigkeit am besten?',
+            options: [
+                'Hauptsächlich am Schreibtisch',
+                'Körperlich / handwerklich',
+                'Gemischt aus beidem'
+            ]
+        },
+        {
+            id: 'bu_sorge',
+            type: 'choice',
+            multi: true,
+            header: 'Was wäre für dich das Schlimmste,\nwenn du ausfällst?',
+            options: [
+                'Laufende Kosten und Miete',
+                'Familie und Kinder versorgen',
+                'Laufende Kredite bedienen',
+                'Meinen Alltag finanzieren',
+                'Ich habe mir darüber noch keine Gedanken gemacht'
+            ]
+        },
+        {
+            id: 'bu_gesundheit',
+            type: 'choice',
+            header: 'Wie würdest du deinen\nGesundheitszustand beschreiben?',
+            subline: 'Das hilft mir, die Möglichkeiten für dich vorab realistisch einzuschätzen.',
+            options: [
+                'Ich bin fit, keine Vorerkrankungen',
+                'Es gibt etwas, das relevant sein könnte',
+                'Ich bin unsicher, was zählt'
+            ]
+        },
+        {
+            id: 'bu_staat_erwartung',
+            type: 'stepper',
+            header: 'Was glaubst du, wie viel du\nbei Arbeitskraftverlust vom Staat bekommst?',
+            subline: 'Schätz einfach. Es geht um dein Gefühl dafür, nicht um Präzision.',
+            default: 800, step: 50, min: 0, unit: '€ / Monat'
+        },
+        {
+            id: 'bu_fixkosten',
+            type: 'stepper',
+            header: 'Wie viel brauchst du monatlich,\num deine Fixkosten zu decken?',
+            subline: 'Miete, Lebensmittel, Versicherungen. Das Minimum zum Weiterleben.',
+            default: 1500, step: 50, min: 0, unit: '€ / Monat'
+        },
+        {
+            id: 'bu_lebensstandard',
+            type: 'stepper',
+            header: 'Und wie viel brauchst du, um deinen\nLebensstandard zu halten?',
+            subline: 'Urlaub, Freizeit, Sport. Leben statt nur überleben.',
+            default: 2200, step: 50, min: 0, unit: '€ / Monat'
         },
         ...SHARED_STEPS
     ]
@@ -1150,7 +1288,6 @@ function next() {
 
 function render() {
     const s = STEPS[step];
-    const pct = ((step + 1) / TOTAL) * 100;
     window.scrollTo({ top: 0, behavior: 'instant' });
     setTimeout(updateCookieBtnPos, 0);
 
@@ -1161,7 +1298,6 @@ function render() {
     inner.innerHTML = '';
 
     // Header with optional line break
-    const headerText = s.header.replace('\n', ' ');
     const h = el('h2', 'q-header');
     h.innerHTML = s.header.replace('\n', '<br>');
     inner.appendChild(h);
@@ -1199,32 +1335,115 @@ function setBtn(btn, enabled) {
 
 function renderChoice(parent, s) {
     const list = el('div', 'options-list');
-    s.options.forEach(opt => {
-        const b = el('button', 'opt-btn');
-        b.textContent = opt;
-        if (selectedChoice === opt) b.classList.add('selected');
-        b.onclick = () => {
-            list.querySelectorAll('.opt-btn').forEach(x => x.classList.remove('selected'));
-            b.classList.add('selected');
-            selectedChoice = opt;
-            setBtn(btn, true);
-        };
-        list.appendChild(b);
-    });
-    parent.appendChild(list);
 
-    const btnRow = el('div', 'btn-row');
-    const back = el('button', 'btn-zurueck', '← Zurück');
-    back.onclick = goBack;
-    const btn = el('button', 'btn-weiter', 'Weiter →');
-    setBtn(btn, !!selectedChoice);
-    btn.onclick = () => {
-        if (!selectedChoice) return;
-        answers[s.id] = selectedChoice;
-        next();
-    };
-    btnRow.append(back, btn);
-    parent.appendChild(btnRow);
+    if (s.multi) {
+        // Multi-select: answers[s.id] is an array
+        const selected = new Set(Array.isArray(answers[s.id]) ? answers[s.id] : []);
+        const btnRow = el('div', 'btn-row');
+        const back = el('button', 'btn-zurueck', '← Zurück');
+        back.onclick = goBack;
+        const btn = el('button', 'btn-weiter', 'Weiter →');
+        setBtn(btn, selected.size > 0);
+
+        s.options.forEach(opt => {
+            const b = el('button', 'opt-btn');
+            b.textContent = opt;
+            if (selected.has(opt)) b.classList.add('selected');
+            b.onclick = () => {
+                if (selected.has(opt)) {
+                    selected.delete(opt);
+                    b.classList.remove('selected');
+                } else {
+                    selected.add(opt);
+                    b.classList.add('selected');
+                }
+                setBtn(btn, selected.size > 0);
+            };
+            list.appendChild(b);
+        });
+        parent.appendChild(list);
+        btn.onclick = () => {
+            if (selected.size === 0) return;
+            answers[s.id] = Array.from(selected);
+            next();
+        };
+        btnRow.append(back, btn);
+        parent.appendChild(btnRow);
+    } else {
+        // Single-select
+        const btnRow = el('div', 'btn-row');
+        const back = el('button', 'btn-zurueck', '← Zurück');
+        back.onclick = goBack;
+        const btn = el('button', 'btn-weiter', 'Weiter →');
+        setBtn(btn, !!selectedChoice);
+
+        // Restore previous free-text value if navigating back
+        const prevFreeText = (typeof answers[s.id] === 'string' && !s.options.includes(answers[s.id]) && s.freeOption)
+            ? answers[s.id] : '';
+        const isFreeSelected = !!prevFreeText;
+
+        s.options.forEach(opt => {
+            const b = el('button', 'opt-btn');
+            b.textContent = opt;
+            if (selectedChoice === opt && !isFreeSelected) b.classList.add('selected');
+            b.onclick = () => {
+                list.querySelectorAll('.opt-btn').forEach(x => x.classList.remove('selected'));
+                b.classList.add('selected');
+                selectedChoice = opt;
+                if (s.freeOption) freeWrap.style.display = 'none';
+                setBtn(btn, true);
+            };
+            list.appendChild(b);
+        });
+
+        // Free-text option
+        let freeInput = null;
+        let freeWrap = null;
+        if (s.freeOption) {
+            const freeBtn = el('button', 'opt-btn');
+            freeBtn.textContent = s.freeOption;
+            if (isFreeSelected) freeBtn.classList.add('selected');
+            list.appendChild(freeBtn);
+
+            freeWrap = el('div', 'free-option-wrap');
+            freeWrap.style.display = isFreeSelected ? 'block' : 'none';
+            freeInput = el('input');
+            freeInput.className = 'field';
+            freeInput.type = 'text';
+            freeInput.placeholder = 'z. B. Eltern, Steuerberater, Geschwister …';
+            freeInput.value = prevFreeText;
+            freeWrap.appendChild(freeInput);
+
+            freeBtn.onclick = () => {
+                list.querySelectorAll('.opt-btn').forEach(x => x.classList.remove('selected'));
+                freeBtn.classList.add('selected');
+                selectedChoice = s.freeOption;
+                freeWrap.style.display = 'block';
+                freeInput.focus();
+                setBtn(btn, true);
+            };
+
+            if (isFreeSelected) {
+                selectedChoice = s.freeOption;
+                setBtn(btn, true);
+            }
+        }
+
+        parent.appendChild(list);
+        if (freeWrap) parent.appendChild(freeWrap);
+
+        btn.onclick = () => {
+            if (!selectedChoice) return;
+            if (s.freeOption && selectedChoice === s.freeOption) {
+                answers[s.id] = freeInput.value.trim() || s.freeOption;
+            } else {
+                answers[s.id] = selectedChoice;
+            }
+            next();
+        };
+        btnRow.append(back, btn);
+        parent.appendChild(btnRow);
+    }
 }
 
 function renderStepper(parent, s) {
@@ -1253,6 +1472,10 @@ function renderStepper(parent, s) {
 
     row.append(minus, input, plus);
     wrap.appendChild(row);
+    if (s.unit) {
+        const unit = el('p', 'stepper-unit', s.unit);
+        wrap.appendChild(unit);
+    }
     parent.appendChild(wrap);
 
     // Stepper always has a valid value — Weiter always enabled
